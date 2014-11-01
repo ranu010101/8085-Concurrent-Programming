@@ -1,3 +1,5 @@
+Readme for Phase-2 Evaluation
+
 1. Memory Layout
 
 		8000H	____
@@ -33,3 +35,5 @@
 
 8. Context Switching :- Each process will be given a stack of a fixed size (yet to be determined). 
    Context switch will be implemented by pushing the pair of registers (BC, DE & HL), PSW and Program counter into running process' stack. If the process isn't finished, it will be enqueued back to the running queue, otherwise not. A process will be dequeued and the Stack pointer of 8085 will be made to point to the dequeued process' stack pointer. Timer will be reprogrammed. Registers, flags and program counter will be restored from the dequeued process' stack. Henceforth, the dequeued process will continue execution.
+
+9.The code for context switching has been written but without pre-emption.
