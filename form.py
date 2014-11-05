@@ -4,7 +4,7 @@ import urllib2
 import urllib
 from bs4 import BeautifulSoup
 
-#URL manipulation
+#URL Manipulation
 form_URL = raw_input("Enter form url: ")
 list_URL = form_URL.partition('viewform')
 response_URL = list_URL[0] + "formResponse"
