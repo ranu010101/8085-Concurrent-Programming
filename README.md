@@ -1,4 +1,6 @@
 Project for CS321(Computer Peripherals Lab)
 ===========================================
 
-Minor python or bash scripts for web scraping or other minial tasks
+Monitor Service Routine for 8085 series of processors by INTEL.
+===============================================================
+
