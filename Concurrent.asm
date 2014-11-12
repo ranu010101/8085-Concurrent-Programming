@@ -35,7 +35,7 @@
 ;			|	 |		____|
 ;			FFFFH
 ;
-;			9000H - 9017H      Array of program addresses
+;			9000H - 9017H      Array of program addresses (MSB AND THEN LSB)
 ;			9018H			   Pointer to array (Only LSB as MSB is always 90H)
 ;			9019H - 9400H	   Stack for Process 1
 ;			9401H - 97E8H	   Stack for Process 2
@@ -61,18 +61,11 @@
 ;			| USER	|
 ;			|_SPACE_|
 ;
-;---------------------------------------------------------------------------------------------------
-;
-;                                   ASM CODE
-
 CPU "8085.TBL"
 HOF "INT8"
 
 ORG 8000H
 JMP MAINPROG
-
-; INIT SUB-ROUTINE FOR INITIALIZING BOTH STACK AND QUEUE MEMORY LOCATIONS
-; STACK STORES ALL PROGRAMS TO BE RUN AND QUEUE REPRESENTS RUNNING QUEUE
 
 INIT:NOP         
 	CALL STACK_INIT
@@ -80,12 +73,19 @@ INIT:NOP
 	RET
 
 QUEUE_INIT:NOP
-	LXI D,8400H
-	LXI B,03E8H
-	LXI H,0A789H
-
-
-
+	LXI H,93F6H
+	SHLD 0A789H
+	LXI H,97DEH
+	SHLD 0A78BH
+	LXI H,9BC6H
+	SHLD 0A78DH
+	LXI H,9FAEH
+	SHLD 0A78FH
+	LXI H,0A396H
+	SHLD 0A791H
+	LXI H,0A77EH
+	SHLD 0A793H
+	RET
 
 STACK_INIT:NOP	   ; Fills the stack PC with starting address of programs and rest all zeroes. 
 	LHLD 9018H     ; Load content of array[0] & array[1] in HL reg. pair
@@ -155,10 +155,14 @@ STACK_INIT:NOP	   ; Fills the stack PC with starting address of programs and res
 		JMP WHILE2
 
 
-
-
-
-
+START_EXEC:NOP
+	LHLD 0A789H
+	SPHL
+	POP B
+	POP D
+	POP H
+	POP PSW
+	RET
 
 MAINPROG:NOP
 LXI H,0FFFFH
@@ -167,4 +171,5 @@ MVI A,00H
 STA 9018H
 STA 0A799H
 CALL INIT
+CALL START_EXEC   ;Start executing the first program
 RST 5
